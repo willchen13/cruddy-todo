@@ -70,10 +70,8 @@ describe('todos', () => {
     it('should create a new file for each todo', (done) => {
       todos.create('todo1', (err, data) => {
         const todoCount = fs.readdirSync(todos.dataDir).length;
-        console.log(todoCount);
         expect(todoCount).to.equal(1);
         todos.create('todo2', (err, data) => {
-          console.log(todoCount);
           expect(fs.readdirSync(todos.dataDir)).to.have.lengthOf(2);
           done();
         });
@@ -92,7 +90,6 @@ describe('todos', () => {
     it('should only save todo text contents in file', (done) => {
       const todoText = 'walk the dog';
       todos.create(todoText, (err, todo) => {
-        console.log(todo);
         const todoFileContents = fs.readFileSync(path.join(todos.dataDir, `${todo.id}.txt`)).toString();
         expect(todoFileContents).to.equal(todoText);
         done();
@@ -112,6 +109,7 @@ describe('todos', () => {
   describe('readAll', () => {
     it('should return an empty array when there are no todos', (done) => {
       todos.readAll((err, todoList) => {
+        console.log(todoList);
         expect(err).to.be.null;
         expect(todoList.length).to.equal(0);
         done();
@@ -133,7 +131,6 @@ describe('todos', () => {
         });
       });
     });
-
   });
 
   describe('readOne', () => {

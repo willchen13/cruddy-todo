@@ -12,28 +12,32 @@ exports.create = (text, callback) => {
     if (err) {
       console.log('ID didnt exist');
     } else {
-      var stringID = data;
       items[data] = text;
       var todo = items[data];
       fs.writeFile(path.join(exports.dataDir, `${data}.txt`), text, (err) => {
         if (err) {
           throw ('didnt create a file');
         } else {
-          callback(null, {id: stringID, text: text });
-          console.log('created file');
+          callback(null, {id: data, text: text });
         }
       });
-      // var retObj = {id: data};
-      // callback(null, retObj);
     }
   });
 };
 
 exports.readAll = (callback) => {
-  var data = _.map(items, (text, id) => {
-    return { id, text };
+  // var data = _.map(items, (text, id) => {
+  //   return { id, text };
+  // });
+  var result = '';
+  fs.readdir(exports.dataDir, (err, files) => {
+    if (err) {
+      throw ('error reading files from directory');
+    } else {
+      result = _.map(files, file => ({id: file.slice(0, -4), text: file.slice(0, -4)}));
+      callback(null, result);
+    }
   });
-  callback(null, data);
 };
 
 exports.readOne = (id, callback) => {
