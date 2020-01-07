@@ -70,8 +70,10 @@ describe('todos', () => {
     it('should create a new file for each todo', (done) => {
       todos.create('todo1', (err, data) => {
         const todoCount = fs.readdirSync(todos.dataDir).length;
+        console.log(todoCount);
         expect(todoCount).to.equal(1);
         todos.create('todo2', (err, data) => {
+          console.log(todoCount);
           expect(fs.readdirSync(todos.dataDir)).to.have.lengthOf(2);
           done();
         });
@@ -90,6 +92,7 @@ describe('todos', () => {
     it('should only save todo text contents in file', (done) => {
       const todoText = 'walk the dog';
       todos.create(todoText, (err, todo) => {
+        console.log(todo);
         const todoFileContents = fs.readFileSync(path.join(todos.dataDir, `${todo.id}.txt`)).toString();
         expect(todoFileContents).to.equal(todoText);
         done();

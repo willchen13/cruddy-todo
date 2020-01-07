@@ -38,9 +38,30 @@ const writeCounter = (count, callback) => {
 
 // Public API - Fix this function //////////////////////////////////////////////
 
-exports.getNextUniqueId = () => {
-  counter = counter + 1;
-  return zeroPaddedNumber(counter);
+exports.getNextUniqueId = (callback) => {
+  /*
+
+  All todo entries are identified by an auto-incrementing id. Currently, that id is a counter stored in memory. Your first goal is to save the current state of the counter to the hard drive, so it's persisted between server restarts. Do this by rewriting getNextUniqueId to make use of the provided readCounter and writeCounter functions.
+
+  */
+
+  // read the counter value from the text file
+  readCounter((err, data) => {
+    if (err) {
+      callback('error while reading counter file');
+    } else {
+      counter = data + 1;
+      // now that we've incremented the counter variable, we need to update the local storage
+      // text file to contain that counter
+      writeCounter(counter, (err, data) => {
+        if (err) {
+          throw ('error writing the counter');
+        } else {
+          callback(null, zeroPaddedNumber(counter));
+        }
+      });
+    }
+  });
 };
 
 
